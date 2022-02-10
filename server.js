@@ -15,21 +15,25 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+  return res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get("/api", function (req, res) {
+  return res.json({"unix": new Date().getTime(), "utc": new Date().toUTCString()});
+})
  
 app.get("/api/:date", function (req, res) {
-  const date= new Date(req.params.date);
-
-  if(date instanceof Date && !isNaN(date)) {
-    res.json({"unix": date.getTime(), "utc": date.toUTCString()});
-  } else {
-    res.status(400).send({
-      error: 'Invalid Date'
-   });
-  }
+  const unixRegex = /\d{13}/g;
+  let date = new Date(req.params.date);
   
+  if(unixRegex.test(req.params.date)) {
+    date=new Date(parseInt(req.params.date));
+  } else if(!(date instanceof Date) || isNaN(date)) {
+    return res.status(400).send({
+      error: 'Invalid Date'
+    });
+  }
+  return res.json({"unix": date.getTime(), "utc": date.toUTCString()});
 });
 
 const port = process.env.PORT || 5000;
