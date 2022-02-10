@@ -1,6 +1,7 @@
 {
   "name": "timestamp-microservice",
   "version": "0.0.1",
+  "author": "Silvio Sol",
   "description": "A simple project",
   "main": "server.js",
   "scripts": {
@@ -9,5 +10,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.2"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
